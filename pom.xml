@@ -99,6 +99,10 @@
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <listener>false</listener>
+                        <visitor>true</visitor>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

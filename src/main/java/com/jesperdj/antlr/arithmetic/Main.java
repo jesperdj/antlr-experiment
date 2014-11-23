@@ -20,5 +20,7 @@ public final class Main {
         final ParseTree tree = parser.prog();
 
         System.out.println(tree.toStringTree(parser));
+
+        new EvalVisitor().visit(tree);
     }
 }

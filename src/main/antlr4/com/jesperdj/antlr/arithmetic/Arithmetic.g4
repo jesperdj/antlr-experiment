@@ -2,17 +2,22 @@ grammar Arithmetic;
 
 prog: stat+ ;
 
-stat: expr NEWLINE
-    | ID '=' expr NEWLINE
-    | NEWLINE
+stat: expr NEWLINE              # printExpr
+    | ID '=' expr NEWLINE       # assign
+    | NEWLINE                   # blank
     ;
 
-expr: expr ( '*' | '/' ) expr
-    | expr ( '+' | '-' ) expr
-    | INT
-    | ID
-    | '(' expr ')'
+expr: expr op=(MUL|DIV) expr    # MulDiv
+    | expr op=(ADD|SUB) expr    # AddSub
+    | INT                       # int
+    | ID                        # id
+    | '(' expr ')'              # parens
     ;
+
+MUL : '*' ;
+DIV : '/' ;
+ADD : '+' ;
+SUB : '-' ;
 
 ID  : [a-zA-Z]+ ;
 INT : [0-9]+ ;
