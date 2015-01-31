@@ -21,6 +21,6 @@ public final class Main {
 
         System.out.println(tree.toStringTree(parser));
 
-        new EvalVisitor().visit(tree);
+        new EvalVisitor(System.out).visit(tree);
     }
 }

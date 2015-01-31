@@ -2,12 +2,23 @@ package com.jesperdj.antlr.arithmetic;
 
 import org.antlr.v4.runtime.misc.NotNull;
 
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class EvalVisitor extends ArithmeticBaseVisitor<Integer> {
 
     private final Map<String, Integer> environment = new HashMap<>();
+
+    private final PrintStream out;
+
+    public EvalVisitor(PrintStream out) {
+        this.out = out;
+    }
+
+    public Map<String, Integer> getEnvironment() {
+        return environment;
+    }
 
     @Override
     public Integer visitAssign(@NotNull ArithmeticParser.AssignContext ctx) {
@@ -20,7 +31,7 @@ public final class EvalVisitor extends ArithmeticBaseVisitor<Integer> {
     @Override
     public Integer visitPrintExpr(@NotNull ArithmeticParser.PrintExprContext ctx) {
         int value = visit(ctx.expr());
-        System.out.println(value);
+        out.println(value);
         return 0;
     }
 
