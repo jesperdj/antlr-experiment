@@ -12,9 +12,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExampleTest {
 
@@ -24,8 +22,9 @@ public class ExampleTest {
         testEval("2 + 4 * 3\n", "14\n");
 
         final EvalVisitor evalVisitor = testEval("x = 5\ny = 3\n2 * x + y\n", "13\n");
-        assertThat(evalVisitor.getEnvironment(), hasEntry("x", 5));
-        assertThat(evalVisitor.getEnvironment(), hasEntry("y", 3));
+        assertThat(evalVisitor.getEnvironment())
+                .containsEntry("x", 5)
+                .containsEntry("y", 3);
 
         testEval("x = 5\ny = 3\n2 * (x + y)\n", "16\n");
     }
@@ -39,14 +38,15 @@ public class ExampleTest {
         final ParseTree tree = parser.prog();
 
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        final PrintStream ps = new PrintStream(out, true, "UTF-8");
+        final PrintStream ps = new PrintStream(out, true, StandardCharsets.UTF_8);
 
         final EvalVisitor evalVisitor = new EvalVisitor(ps);
         evalVisitor.visit(tree);
 
-        final String actualOutput = new String(out.toByteArray(), StandardCharsets.UTF_8).replaceAll("\r\n", "\n");
+        final String actualOutput = out.toString(StandardCharsets.UTF_8).replaceAll("\r\n", "\n");
 
-        assertThat(actualOutput, is(expectedOutput));
+        assertThat(actualOutput).isEqualTo(expectedOutput);
+
         return evalVisitor;
     }
 }
